@@ -14,7 +14,7 @@ import java.util.List;
 @Dao
 public interface BudgetDao {
 
-    @Query("Select * from budget order by name asc")
+    @Query("Select * from budget order by id desc")
     LiveData<List<Budget>> getAll();
 
     @Insert

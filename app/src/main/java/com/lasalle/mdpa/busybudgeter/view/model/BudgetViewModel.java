@@ -5,6 +5,7 @@ import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
@@ -55,25 +56,10 @@ public class BudgetViewModel extends AndroidViewModel {
     }
 
     public void insertNewBudget(String budgetName) {
-        Thread thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Budget budget = new Budget();
-                budget.setName(budgetName);
+        Budget budget = new Budget();
+        budget.setName(budgetName);
 
-                try {
-                    Thread.sleep(50000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-                budgetingDatabase.getBudgetDao().insert(budget);
-                Log.d("BudgetViewModel", "I am done my lord!");
-            }
-        });
-
-        thread.setPriority(THREAD_PRIORITY_BACKGROUND);
-        thread.start();
+        new BudgetInsertAsync().execute(budget);
     }
 
     @Override
@@ -82,5 +68,26 @@ public class BudgetViewModel extends AndroidViewModel {
         super.onCleared();
     }
 
+    private class BudgetInsertAsync extends AsyncTask<Budget, Void, Void> {
+        @Override
+        protected Void doInBackground(Budget... budget) {
+
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            budgetingDatabase.getBudgetDao().insert(budget[0]);
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            Log.d("BudgetViewModel", "I am done my lord!");
+            super.onPostExecute(aVoid);
+        }
+    }
 
 }
