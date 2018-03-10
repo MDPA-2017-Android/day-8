@@ -6,6 +6,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
 import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
+import android.util.Log;
 
 import com.lasalle.mdpa.busybudgeter.database.BudgetingDatabase;
 import com.lasalle.mdpa.busybudgeter.database.entity.Budget;
@@ -51,10 +53,22 @@ public class BudgetViewModel extends AndroidViewModel {
     }
 
     public void insertNewBudget(String budgetName) {
-        Budget budget = new Budget();
-        budget.setName(budgetName);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Budget budget = new Budget();
+                budget.setName(budgetName);
 
-        budgetingDatabase.getBudgetDao().insert(budget);
+                try {
+                    Thread.sleep(50000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                budgetingDatabase.getBudgetDao().insert(budget);
+                Log.d("BudgetViewModel", "I am done my lord!");
+            }
+        }).start();
     }
 
     @Override
