@@ -1,6 +1,7 @@
 package com.lasalle.mdpa.busybudgeter.view.model;
 
 import android.app.Application;
+import android.app.IntentService;
 import android.app.Service;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
@@ -76,17 +77,11 @@ public class BudgetViewModel extends AndroidViewModel {
         super.onCleared();
     }
 
-    public class BudgetInsertService extends Service {
-
-        @Nullable
-        @Override
-        public IBinder onBind(Intent intent) {
-            return null;
-        }
+    public class BudgetInsertService extends IntentService {
 
         @Override
-        public int onStartCommand(Intent intent, int flags, int startId) {
-            return super.onStartCommand(intent, flags, startId);
+        protected void onHandleIntent(@Nullable Intent intent) {
+            
         }
     }
 
