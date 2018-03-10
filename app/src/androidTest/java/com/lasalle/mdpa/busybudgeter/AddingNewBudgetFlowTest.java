@@ -53,7 +53,7 @@ public class AddingNewBudgetFlowTest {
     public void SetupTest() {
         // Create Database
         Context context = InstrumentationRegistry.getTargetContext();
-        budgetingDatabase = Room.inMemoryDatabaseBuilder(context, BudgetingDatabase.class).allowMainThreadQueries().build();
+        budgetingDatabase = Room.inMemoryDatabaseBuilder(context, BudgetingDatabase.class).build();
         budgetDao = budgetingDatabase.getBudgetDao();
 
         // Inject database into application

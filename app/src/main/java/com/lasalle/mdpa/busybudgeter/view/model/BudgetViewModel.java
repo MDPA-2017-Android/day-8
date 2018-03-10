@@ -71,15 +71,7 @@ public class BudgetViewModel extends AndroidViewModel {
     private class BudgetInsertAsync extends AsyncTask<Budget, Void, Void> {
         @Override
         protected Void doInBackground(Budget... budget) {
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
             budgetingDatabase.getBudgetDao().insert(budget[0]);
-
             return null;
         }
 
