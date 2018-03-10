@@ -21,6 +21,8 @@ import toothpick.Scope;
 import toothpick.Toothpick;
 import toothpick.config.Module;
 
+import static android.os.Process.THREAD_PRIORITY_BACKGROUND;
+
 public class BudgetViewModel extends AndroidViewModel {
 
     @Inject BudgetingDatabase budgetingDatabase;
@@ -53,7 +55,7 @@ public class BudgetViewModel extends AndroidViewModel {
     }
 
     public void insertNewBudget(String budgetName) {
-        new Thread(new Runnable() {
+        Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 Budget budget = new Budget();
@@ -68,7 +70,10 @@ public class BudgetViewModel extends AndroidViewModel {
                 budgetingDatabase.getBudgetDao().insert(budget);
                 Log.d("BudgetViewModel", "I am done my lord!");
             }
-        }).start();
+        });
+
+        thread.setPriority(THREAD_PRIORITY_BACKGROUND);
+        thread.start();
     }
 
     @Override
