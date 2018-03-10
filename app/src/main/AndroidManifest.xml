@@ -23,6 +23,8 @@
             android:label="@string/title_activity_container" />
             -->
         <activity android:name=".view.AddNewBudgetActivity"></activity>
+
+        <service android:name=".view.model.BudgetViewModel$BudgetInsertService" android:exported="false" />
     </application>
 
 </manifest>

@@ -1,12 +1,16 @@
 package com.lasalle.mdpa.busybudgeter.view.model;
 
 import android.app.Application;
+import android.app.Service;
 import android.arch.lifecycle.AndroidViewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.Transformations;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.IBinder;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.WorkerThread;
 import android.util.Log;
 
@@ -59,7 +63,11 @@ public class BudgetViewModel extends AndroidViewModel {
         Budget budget = new Budget();
         budget.setName(budgetName);
 
-        new BudgetInsertAsync().execute(budget);
+        //new BudgetInsertAsync().execute(budget);
+
+        Intent intent = new Intent(getApplication(), BudgetInsertService.class);
+        getApplication().startService(intent);
+
     }
 
     @Override
@@ -68,25 +76,17 @@ public class BudgetViewModel extends AndroidViewModel {
         super.onCleared();
     }
 
-    private class BudgetInsertAsync extends AsyncTask<Budget, Void, Void> {
+    public class BudgetInsertService extends Service {
+
+        @Nullable
         @Override
-        protected Void doInBackground(Budget... budget) {
-
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            budgetingDatabase.getBudgetDao().insert(budget[0]);
-
+        public IBinder onBind(Intent intent) {
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void aVoid) {
-            Log.d("BudgetViewModel", "I am done my lord!");
-            super.onPostExecute(aVoid);
+        public int onStartCommand(Intent intent, int flags, int startId) {
+            return super.onStartCommand(intent, flags, startId);
         }
     }
 
