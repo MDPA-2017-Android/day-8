@@ -53,7 +53,8 @@ public class BudgetViewModel extends AndroidViewModel {
     public void insertNewBudget(String budgetName) {
         Budget budget = new Budget();
         budget.setName(budgetName);
-
+        
+        Thread.sleep(50000);
         budgetingDatabase.getBudgetDao().insert(budget);
     }
 
